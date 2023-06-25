@@ -9,7 +9,7 @@ export default class AuthHttpGateway implements AuthGateway {
 	}
 	
 	async verify(token: string): Promise<any> {
-		const output = await this.httpClient.post(`http://localhost:3004/verify`, { token });
+		const output = await this.httpClient.post(`${process.env.AUTH}/verify`, { token });
 		return output;
 	}
 

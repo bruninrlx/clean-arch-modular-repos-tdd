@@ -7,7 +7,7 @@ export default class FreightHttpGateway implements FreightGateway {
 	}
 
 	async simulateFreight(input: Input): Promise<Output> {
-		const output = await this.httpClient.post("http://localhost:3002/simulateFreight", input);
+		const output = await this.httpClient.post(`${process.env.FREIGHT}/simulateFreight`, input);
 		return output;
 	}
 

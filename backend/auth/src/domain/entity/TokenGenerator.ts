@@ -9,7 +9,7 @@ export default class TokenGenerator {
 	}
 
 	sign (user: User, date: Date) {
-		return sign({ email: user.email.value, iat: date.getTime(), expiresIn: this.EXPIRES_IN}, this.key);
+		return sign({ email: user.email.value, iat: new Date(date).getTime(), expiresIn: this.EXPIRES_IN}, this.key);
 	}
 
 	verify (token: string): any {

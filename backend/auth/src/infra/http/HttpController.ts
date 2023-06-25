@@ -12,5 +12,17 @@ export default class HttpController {
 			return output;
 		});
 
+		httpServer.on("post", "/signup", async function (params: any, body: any) {
+			const signup = usecaseFactory.createSignup();
+			const output = await signup.execute(body);
+			return output;
+		});
+
+		httpServer.on("post", "/login", async function (params: any, body: any) {
+			const login = usecaseFactory.createLogin();
+			const output = await login.execute(body);
+			return output;
+		});
+
 	}
 }

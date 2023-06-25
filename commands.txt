@@ -1,0 +1,19 @@
+docker build -t auth .
+docker tag auth localhost.localstack.cloud:4511/auth
+docker push localhost.localstack.cloud:4511/auth
+
+docker build -t catalog .
+docker tag catalog localhost.localstack.cloud:4511/catalog
+docker push localhost.localstack.cloud:4511/catalog
+
+docker build -t checkout .
+docker tag checkout localhost.localstack.cloud:4511/checkout
+docker push localhost.localstack.cloud:4511/checkout
+
+docker build -t freight .
+docker tag freight localhost.localstack.cloud:4511/freight
+docker push localhost.localstack.cloud:4511/freight
+
+docker build -t stock .
+docker tag stock localhost.localstack.cloud:4511/stock
+docker push localhost.localstack.cloud:4511/stock

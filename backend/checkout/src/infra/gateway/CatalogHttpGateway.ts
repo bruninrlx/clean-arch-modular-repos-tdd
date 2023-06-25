@@ -8,7 +8,7 @@ export default class CatalogHttpGateway implements CatalogGateway {
 	}
 	
 	async getProduct(idProduct: number): Promise<Product> {
-		const productData = await this.httpClient.get(`http://localhost:3001/products/${idProduct}`);
+		const productData = await this.httpClient.get(`${process.env.CATALOG}/products/${idProduct}`);
 		const product = new Product(productData.idProduct, productData.description, productData.price, productData.width, productData.height, productData.length, productData.weight, productData.volume, productData.density);
 		return product;
 	}

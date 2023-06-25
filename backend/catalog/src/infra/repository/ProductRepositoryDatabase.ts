@@ -31,7 +31,7 @@ export default class ProductRepositoryDatabase implements ProductRepository {
 
 	async get (idProduct: number) {
 		const [productData] = 
-		await this.prisma.$queryRaw`select * from "Product" where id_product = ${idProduct}` as any;
+		await this.prisma.$queryRaw`select * from "Product" where id_product = ${Number(idProduct)}` as any;
 
 		return new Product(
 			productData.id_product,

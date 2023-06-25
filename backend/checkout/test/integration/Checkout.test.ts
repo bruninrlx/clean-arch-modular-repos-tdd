@@ -1,20 +1,16 @@
 import axios from "axios";
 import sinon from "sinon";
 import Checkout from "../../src/application/usecase/Checkout";
-import CouponRepository from "../../src/application/repository/CouponRepository";
 import CouponRepositoryDatabase from "../../src/infra/repository/CouponRepositoryDatabase";
 import crypto from "crypto";
 import GetOrder from "../../src/application/usecase/GetOrder";
-import OrderRepositoryDatabase from "../../src/infra/repository/OrderRepositoryDatabase";
 import Product from "../../src/domain/entity/Product";
-import Coupon from "../../src/domain/entity/Coupon";
 import DatabaseRepositoryFactory from "../../src/infra/factory/DatabaseRepositoryFactory";
 import RepositoryFactory from "../../src/application/factory/RepositoryFactory";
-import PgPromiseAdapter from "../../src/infra/database/PgPromiseAdapter";
-import DatabaseConnection from "../../src/infra/database/DatabaseConnection";
 import GatewayHttpFactory from "../../src/infra/factory/GatewayHttpFactory";
 import AxiosAdapter from "../../src/infra/http/AxiosAdapter";
 import CatalogHttpGateway from "../../src/infra/gateway/CatalogHttpGateway";
+import { PrismaClient } from "@prisma/client";
 
 axios.defaults.validateStatus = function () {
 	return true;
@@ -23,12 +19,9 @@ axios.defaults.validateStatus = function () {
 let checkout: Checkout;
 let getOrder: GetOrder;
 let repositoryFactory: RepositoryFactory;
-let connection: DatabaseConnection;
 
 beforeEach(async () => {
-	connection = new PgPromiseAdapter();
-	await connection.connect();
-	repositoryFactory = new DatabaseRepositoryFactory(connection);
+	repositoryFactory = new DatabaseRepositoryFactory(new PrismaClient());
 	const httpClient = new AxiosAdapter();
 	const gatewayFactory = new GatewayHttpFactory(httpClient);
 	checkout = new Checkout(repositoryFactory, gatewayFactory);
@@ -241,8 +234,4 @@ test("Deve fazer um pedido com 3 itens e gerar o código do pedido", async funct
 	await checkout.execute(input);
 	const output = await getOrder.execute(idOrder);
 	expect(output.code).toBe("202200000003");
-});
-
-afterEach(async () => {
-	await connection.close();
 });

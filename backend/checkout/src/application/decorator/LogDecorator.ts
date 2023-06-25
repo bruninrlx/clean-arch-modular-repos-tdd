@@ -8,7 +8,6 @@ export default class AuthDecorator implements Usecase {
 	}
 
 	async execute(input: any): Promise<any> {
-		console.log(input);
 		return this.usecase.execute(input);
 	}
 

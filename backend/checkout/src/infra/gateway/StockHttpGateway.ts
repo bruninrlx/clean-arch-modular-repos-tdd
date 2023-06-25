@@ -7,7 +7,7 @@ export default class StockHttpGateway implements StockGateway {
 	}
 
 	async decreaseStock(input: Input): Promise<void> {
-		await this.httpClient.post("http://localhost:3005/decreaseStock", input);
+		await this.httpClient.post(`${process.env.STOCK}/decreaseStock`, input);
 	}
 
 }

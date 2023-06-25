@@ -3,6 +3,13 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "dev": "ts-node-dev --respawn --transpile-only --ignore-watch node_modules src/main_api.ts",
+    "build": "yarn run clean && tsc -p tsconfig-build.json",
+    "start": "node dist/main_api.js",
+    "clean": "rm -rf dist",
+    "prestart": "yarn build"
+  },
   "dependencies": {
     "@hapi/hapi": "^21.3.2",
     "@prisma/client": "4.15.0",

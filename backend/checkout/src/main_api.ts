@@ -5,23 +5,22 @@ import UsecaseFactory from "./infra/factory/UsecaseFactory";
 import AxiosAdapter from "./infra/http/AxiosAdapter";
 import GatewayHttpFactory from "./infra/factory/GatewayHttpFactory";
 import RabbitMQAdapter from "./infra/queue/RabbitMQAdapter";
-import QueueControlle from "./infra/queue/QueueController";
 import { PrismaClient } from "@prisma/client";
+import QueueController from "./infra/queue/QueueController";
+import SqsAdapter from "./infra/queue/SQSAdapter";
 
 // main
-
-async function main () {
 	const prisma = new PrismaClient();
 	const repositoryFactory = new DatabaseRepositoryFactory(prisma);
 	const httpClient = new AxiosAdapter();
 	const gatewayFactory = new GatewayHttpFactory(httpClient);
-	const queue = new RabbitMQAdapter();
-	await queue.connect();
+	const queue = new SqsAdapter({
+	  'checkout': process.env.CHECKOUT_QUEUE??"",
+	  'orderPlaced': process.env.ORDER_PLACED_QUEUE??"",
+	});
 	const usecaseFactory = new UsecaseFactory(repositoryFactory, gatewayFactory, queue);
 	const httpServer = new ExpressAdapter();
 	new HttpController(httpServer, usecaseFactory, queue);
-	new QueueControlle(queue, usecaseFactory);
-	httpServer.listen(3000);
-}
+	new QueueController(queue, usecaseFactory);
+	httpServer.listen(process.env.PORT);
 
-main();

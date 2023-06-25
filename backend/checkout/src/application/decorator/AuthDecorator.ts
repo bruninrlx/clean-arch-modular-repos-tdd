@@ -12,7 +12,6 @@ export default class AuthDecorator implements Usecase {
 	async execute(input: any): Promise<any> {
 		if (input.token) {
 			const session = await this.authGateway.verify(input.token);
-			console.log(session);
 			if (!session) throw new Error("Authentication failed");
 		}
 		return this.usecase.execute(input);

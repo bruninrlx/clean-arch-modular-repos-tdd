@@ -12,4 +12,4 @@ const usecaseFactory = new UsecaseFactory(repositoryFactory);
 const httpServer = new ExpressAdapter();
 // const httpServer = new HapiAdapter();
 new HttpController(httpServer, usecaseFactory);
-httpServer.listen(3002);
+httpServer.listen(process.env.PORT);

@@ -36,9 +36,10 @@ export default class OrderRepositoryDatabase implements OrderRepository {
 	}
 
 	async save(order: Order): Promise<void> {
-		await this.prisma.$queryRaw`insert into "Order" (id_order, code, cpf, total, freight, date, sequence) values (${order.idOrder}, ${order.code}, ${order.cpf.value}, ${order.getTotal()}, ${order.freight}, ${order.date}, ${order.sequence})`
+		console.log(order)
+		await this.prisma.$queryRaw`insert into "Order" (id_order, code, cpf, total, freight, date, sequence) values (${order.idOrder??order.code}, ${order.code}, ${order.cpf.value}, ${order.getTotal()}, ${order.freight}, ${new Date()}, ${order.sequence})`
 		for (const item of order.items) {
-			await this.prisma.$queryRaw`insert into "Item" (id_order, id_product, price, quantity) values (${order.idOrder}, ${item.idProduct}, ${item.price}, ${item.quantity})`
+			await this.prisma.$queryRaw`insert into "Item" (id_order, id_product, price, quantity) values (${order.idOrder??order.code}, ${item.idProduct}, ${item.price}, ${item.quantity})`
 		}
 	}
 

@@ -23,7 +23,6 @@ model Coupon {
   code         String   @id
   percentage   Float
   expire_date  DateTime @map("expire_date")
-  Order        Order[]
 }
 
 model Order {
@@ -35,7 +34,6 @@ model Order {
   sequence  Int
   date      DateTime
   Item      Item[]
-  Coupon    Coupon   @relation(fields: [code], references: [code])
 }
 
 model Item {
@@ -61,7 +59,8 @@ model Zipcode {
 }
 
 model StockEntry {
-  id_product Int     @id @map("id_product")
+  id        Int     @id @default(autoincrement())
+  id_product Int    @map("id_product")
   operation  String
   quantity   Int
   Product    Product @relation(fields: [id_product], references: [id_product])
